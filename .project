@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>krickert-oplog-reader</name>
+  <comment>Made for easy replication of a mongodb to other sources, this oplog reader will read from multiple mongo logs at one time and put the data in a single concurrent queue.  This is made in case you have multiple mongo masters to listen for events. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
