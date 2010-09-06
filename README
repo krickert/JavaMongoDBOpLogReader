@@ -1,0 +1,49 @@
+This software is published under the GNUv3:
+http://www.gnu.org/licenses/gpl.html
+
+What's needed
+Java 1.6
+Maven2
+Mongodb
+
+What is it?
+This is a mongodb oplog reader.  It's easier to use (I think) than the sample code that Mongo provides.
+
+Also, it allows for a single process to "listen" to multiple mongodb's at one time.  This is useful if you want to replicate the mongo data to another data store or send as triggered events to a queue service.
+
+The general architecture is straight forward:
+1) Create a thread for each mongo connection
+2) Run in a thread pool and use the same concurrent queue
+3) have another thread listen for the events
+
+Below is the sample code that uses this method on a single thread:
+
+==============
+  public static void main(String args[]) {
+    try {
+      Mongo mongo = new Mongo("localhost");
+      BlockingQueue<OplogLine> queue = new LinkedBlockingQueue<OplogLine>();
+      OpLogReader reader = new OpLogReader(mongo, queue);
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      executor.execute(reader);
+      executor.shutdown();
+      try {
+        while (!executor.isTerminated()) {
+          OplogLine line = queue.poll(30, TimeUnit.SECONDS);
+          log.info("Line info: " + line);
+        }
+      } catch (InterruptedException e) {
+        log.info("time to go.");
+        executor.shutdownNow();
+      }
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    } catch (MongoException e) {
+      e.printStackTrace();
+    }
+  }
+================
+
+As you see from above, you connect to mongo, allocate a new queue, and execute the log reader.  Once executed the concurrent queue will automatically fill up with OplogLine objects to poll from the queue object.
+
+if you have any questions please email me.
