@@ -7,7 +7,10 @@ Maven2
 Mongodb
 
 What is it?
-This is a mongodb oplog reader.  It's easier to use (I think) than the sample code that Mongo provides.
+This is a mongodb oplog reader.  It's easier to use (I think) than the sample code that Mongo provides.  This is what the mongo folks use as an example:
+http://github.com/mongodb/mongo-java-driver/blob/master/examples/ReadOplog.java
+
+This is just a wrapper over this.
 
 Also, it allows for a single process to "listen" to multiple mongodb's at one time.  This is useful if you want to replicate the mongo data to another data store or send as triggered events to a queue service.
 
